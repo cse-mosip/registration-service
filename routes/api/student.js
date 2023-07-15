@@ -14,21 +14,22 @@ router.post("/", [isAuth], (req, res) => {
     faculty
   );
   let isValid = formValidation(registationForm);
+
   if (isValid) {
     //check is it exist
     let isExist = true;
 
     if (isExist) {
       //responce
-      res.status(409).send({ data: {}, msg: "User already exist" });
+      res.status(409).json({ data: {}, msg: "User already exist" });
     } else {
       //add body to database
       //responce
-      res.status(201).send({ data: {}, msg: "Add new user" });
+      res.status(201).json({ data: {}, msg: "Add new user" });
     }
   } else {
     //responce
-    res.status(400).send({ data: {}, msg: "Invalid form data" });
+    res.status(400).json({ data: {}, msg: "Invalid form data" });
   }
 });
 module.exports = router;

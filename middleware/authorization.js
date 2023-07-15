@@ -15,7 +15,7 @@ const isAuth = (req, res, next) => {
       }
     });
   } else {
-    res.send(401).send({ message: "No Token" });
+    res.status(401).send({ message: "No Token" });
   }
 };
 module.exports = {
