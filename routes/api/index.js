@@ -1,6 +1,8 @@
-const router = require('express').Router();
+const router = require("express").Router();
+const apiStudentRoutes = require("./student");
 const authorizationRoutes = require("./authorization.routes");
 
+router.use("/student", apiStudentRoutes);
 router.use('/authorization', authorizationRoutes);
 //router.use('/registration', registrationRoutes);
 
