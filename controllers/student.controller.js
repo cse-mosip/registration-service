@@ -1,10 +1,7 @@
-const express = require("express");
-const { isAuth } = require("./../../middleware/authorization");
-const { formValidation } = require("./../../validation/form");
-const RegistationForm = require("./../../dto/RegistationForm");
-const router = express.Router();
+const { formValidation } = require("./../validation/form");
+const RegistationForm = require("./../dto/RegistationForm");
 
-router.post("/", [isAuth], (req, res) => {
+exports.registation = (req, res) => {
   let { index, email, firstName, lastName, faculty } = req.body;
   let registationForm = new RegistationForm(
     index,
@@ -31,5 +28,4 @@ router.post("/", [isAuth], (req, res) => {
     //responce
     res.status(400).json({ data: {}, msg: "Invalid form data" });
   }
-});
-module.exports = router;
+};
