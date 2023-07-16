@@ -1,8 +1,10 @@
 const { formValidation } = require("./../validation/form");
 const RegistationForm = require("./../dto/RegistationForm");
+const Student = require("../model/student.model");
 
 exports.registation = (req, res) => {
   let { index, email, firstName, lastName, faculty } = req.body;
+  console.log(req.body);
   let registationForm = new RegistationForm(
     index,
     email,
@@ -11,21 +13,16 @@ exports.registation = (req, res) => {
     faculty
   );
   let isValid = formValidation(registationForm);
-
+  console.log(isValid);
   if (isValid) {
-    //check is it exist
-    let isExist = true;
-
-    if (isExist) {
-      //responce
-      res.status(409).json({ data: {}, msg: "User already exist" });
-    } else {
-      //add body to database
-      //responce
-      res.status(201).json({ data: {}, msg: "Add new user" });
-    }
+    Student.create({...registationForm}).then((student) => {
+        res.status(201).json({ data: student, msg: "Add new user" });
+    }).catch((err) => {
+      console.log(err);
+      res.status(409).json({ data: {}, msg: err.message });
+    });
   } else {
-    //responce
+    //response
     res.status(400).json({ data: {}, msg: "Invalid form data" });
   }
 };
