@@ -39,25 +39,25 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const STUDENTS = sequelize.define('STUDENTS', {
   
-  ID: {
+  id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
   },
-  EMAIL: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  FIRSTNAME: {
+  firstname: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  LASTNAME: {
+  lastname: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  FACULTY: {
+  faculty: {
     type: DataTypes.STRING,
     allowNull: false,
   },
