@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Docker Login
+        run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASS}}
+
+      - name: Build Docker Image
+        run: docker build -t registration-service .
+
+      - name: Docker Push Latest
+        run: |
+          docker tag registration-service ${{secrets.DOCKER_USER}}/registration-service:latest
+          docker push ${{secrets.DOCKER_USER}}/registration-service:latest
