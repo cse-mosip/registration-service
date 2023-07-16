@@ -3,6 +3,7 @@ const { isAuth } = require("./../../middleware/authorization");
 const { formValidation } = require("./../../validation/form");
 const RegistationForm = require("./../../dto/RegistationForm");
 const router = express.Router();
+const sequelize = require("./../../config/connection.js");
 
 router.post("/", [isAuth], (req, res) => {
   let { index, email, firstName, lastName, faculty } = req.body;
