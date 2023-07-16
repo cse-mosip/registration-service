@@ -46,3 +46,19 @@ exports.getAll = (req, res) => {
         console.error('SOMETHING WRONG : ', error.message);
     });
 }
+
+exports.getById = (req, res) => {
+    let id = req.params.id;
+    sequelize.sync().then(() => {
+        Student.findByPk(id).then(results => {
+            console.log(results);
+            res.status(200).json(results);
+        }).catch((error) => {
+            console.error('Failed to retrieve data : ', error);
+            res.status(500).json({error: 'Failed to retrieve data'});
+        });
+
+    }).catch((error) => {
+        console.error('SOMETHING WRONG : ', error.message);
+    });
+}
