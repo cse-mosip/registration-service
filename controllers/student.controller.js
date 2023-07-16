@@ -62,3 +62,22 @@ exports.getById = (req, res) => {
         console.error('SOMETHING WRONG : ', error.message);
     });
 }
+
+exports.deleteById = (req, res) => {
+    const studentId = req.params.id;
+    sequelize.sync().then(() => {
+        Student.destroy({
+            where: {
+                id: studentId
+            }
+        }).then(results => {
+            console.log(results);
+            res.status(200).json(results);
+        }).catch((error) => {
+            res.status(500).json({error: error.message});
+        });
+
+    }).catch((error) => {
+        console.error('SOMETHING WRONG : ', error.message);
+    });
+};

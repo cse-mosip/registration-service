@@ -4,6 +4,5 @@ const authorizationRoutes = require("./authorization.routes");
 
 router.use("/student", apiStudentRoutes);
 router.use("/authorization", authorizationRoutes);
-//router.use('/registration', registrationRoutes);
 
 module.exports = router;

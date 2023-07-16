@@ -10,30 +10,30 @@ exports.signIn = (req, res) => {
     }
 
     const { email, password } = req.body;
-    
+
     if (!(email && password)) {
         res.status(400).send("Email or Password is Missing");
     } else {
-           // Validate if user exist in our database
-            // const user = await User.findOne({ email });
-        
+        // Validate if user exist in our database
+        // const user = await User.findOne({ email });
+
         const salt = bcrypt.genSaltSync(saltRounds);
-        encryptedPassword =  bcrypt.hashSync(process.env.PASSWORD, salt);
+        encryptedPassword = bcrypt.hashSync(process.env.PASSWORD, salt);
         try {
             if (!bcrypt.compareSync(password, encryptedPassword)) {
-                res.status(400).json("Password does not match !");                
+                res.status(400).json("Password does not match !");
             } else {
                 const token = jwt.sign(
-                    {email_id : email },
+                    { email_id: email },
                     process.env.JWT_SECRET,
                     {
-                      expiresIn: "2h",
+                        expiresIn: "2h",
                     }
-                  );
-                  res.status(201).json(token);
+                );
+                res.status(201).json(token);
             }
-        }  catch (err) {
+        } catch (err) {
             console.log(err);
-        }             
+        }
     }
 }
