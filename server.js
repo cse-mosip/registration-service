@@ -5,18 +5,18 @@ const cors = require('cors');
 const sequelize = require("./config/connection.js");
 
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
+const HOST = '0.0.0.0';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use(routes);
-app.listen(3000, () => {
-  console.log("server is lsting on port 3000");
-});
 
 // Sync Sequelize models to the MySQL database on server start
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
+    app.listen(PORT, HOST, () => {
+        console.log(`Running on https://${HOST}:${PORT}`);
+    });
 });
