@@ -38,19 +38,39 @@ exports.signIn = (req, res) => {
     }
 }
 
-exports.deleteUser = (req, res) => {
+
+//delete user
+exports.deleteUser = async (req, res) => {
     const userId = req.body.userId;
     if (!userId) {
         return res.status(400).send("User Id is Missing");
     }
     // Validate if user exist in our database
+
+    //user model need to be created
     User.findByIdAndRemove(userId, (err, user) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else if (!user) {
-            res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "User is not found" });
         } else {
             res.status(200).json({ message: "User deleted successfully" });
         }
     });
+
+    // try {
+    //     const pool = await sql.connect(config);
+    //     const result = await pool.request()
+    //         .input('userId', sql.Int, userId)
+    //         .query('DELETE FROM users WHERE id = @userId');
+
+    //     if (result.rowsAffected[0] === 0) {
+    //         return res.status(404).json({ message: "User not found" });
+    //     }
+
+    //     res.status(200).json({ message: "User deleted successfully" });
+    // } catch (err) {
+    //     res.status(500).json({ error: err.message });
+    // }
+
 };
