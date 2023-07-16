@@ -4,14 +4,15 @@ const Student = require("../model/student.model");
 const sequelize = require("../config/connection");
 
 exports.registation = (req, res) => {
-    let {index, email, firstName, lastName, faculty} = req.body;
+    let {index, email, firstName, lastName, faculty, department} = req.body;
     console.log(req.body);
     let registationForm = new RegistationForm(
         index,
         email,
         firstName,
         lastName,
-        faculty
+        faculty,
+        department
     );
     let isValid = formValidation(registationForm);
     console.log(isValid);
