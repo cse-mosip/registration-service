@@ -8,10 +8,7 @@ exports.registation = (req, res) => {
   console.log(req.body);
     let {index, email, firstName, lastName, faculty, department} = req.body;   
     // TODO: Adding to S3 bucket & retreiving link
-        // Convert the file to a Blob object
-    let file = req.file
-    const image = new Blob([file.buffer], { type: file.mimetype });
-
+    let image = "https://online.uom-"+req.file.path+".lk"
 
     // Removing the local storage image
     removeFile(imagePathGenerator(req,req.file))
@@ -25,7 +22,7 @@ exports.registation = (req, res) => {
         department,
         image,
     );
-    
+
     // Might add a limitation to size and formats
     let isValid = studentFormValidation(registationForm);
     console.log(isValid);
