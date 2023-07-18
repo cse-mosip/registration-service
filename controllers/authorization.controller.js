@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const User = require("../model/user.model");
 
-exports.signIn = (req, res) => {
+exports.signIn = async (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty!",
@@ -15,19 +15,20 @@ exports.signIn = (req, res) => {
         res.status(400).send("Email or Password is Missing");
     } else {
         // Validate if user exist in our database
-        // const user = await User.findOne({ email });
-
-        const salt = bcrypt.genSaltSync(saltRounds);
-        encryptedPassword = bcrypt.hashSync(process.env.PASSWORD, salt);
         try {
-            if (!bcrypt.compareSync(password, encryptedPassword)) {
+            const user = await User.findOne({ where: {email:email} });
+            if (user == null) {
+                res.status(401).send("No account for this email");
+            }
+            hashedPassword = user.password;
+            if (!bcrypt.compareSync(password, hashedPassword)) {
                 res.status(400).json("Password does not match !");
             } else {
                 const token = jwt.sign(
-                    { email_id: email },
+                    { email_id: email, role:user.role },
                     process.env.JWT_SECRET,
                     {
-                        expiresIn: "2h",
+                        expiresIn: "20m",
                     }
                 );
                 res.status(201).json(token);
