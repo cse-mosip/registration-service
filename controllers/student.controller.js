@@ -1,4 +1,4 @@
-const {formValidation} = require("./../validation/form");
+const {studentFormValidation} = require("./../validation/form");
 const StudentRegistationForm = require("./../dto/StudentRegistationForm");
 const Student = require("../model/student.model");
 const sequelize = require("../config/connection");
@@ -14,7 +14,7 @@ exports.registation = (req, res) => {
         faculty,
         department
     );
-    let isValid = formValidation(registationForm);
+    let isValid = studentFormValidation(registationForm);
     console.log(isValid);
     if (isValid) {
         sequelize.sync().then(() => {
