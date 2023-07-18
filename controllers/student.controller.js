@@ -5,6 +5,8 @@ const sequelize = require("../config/connection");
 const { Op } = require("sequelize");
 
 exports.registation = (req, res) => {
+
+    let image = "https://online.uom-"+req.file.path+".lk"
   let { index, email, firstName, lastName, faculty, department } = req.body;
   console.log(req.body);
   let registationForm = new StudentRegistationForm(
