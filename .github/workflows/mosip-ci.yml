@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -18,6 +20,7 @@ jobs:
         run: docker build -t registration-service .
 
       - name: Docker Push Latest
+        if: github.event_name == 'push'
         run: |
           docker tag registration-service ${{secrets.DOCKER_USER}}/registration-service:latest
           docker push ${{secrets.DOCKER_USER}}/registration-service:latest
