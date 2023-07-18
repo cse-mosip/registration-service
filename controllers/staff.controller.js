@@ -1,12 +1,12 @@
 const { staffFormValidation } = require("./../validation/form");
-const StudentRegistationForm = require("./../dto/StudentRegistationForm");
+const StaffRegistationForm = require("./../dto/StaffRegistationForm");
 const Student = require("../model/staff.model");
 const sequelize = require("../config/connection");
 
 exports.registation = (req, res) => {
   let { email, firstName, lastName, faculty, department } = req.body;
   console.log(req.body);
-  let registationForm = new RegistationForm(
+  let registationForm = new StaffRegistationForm(
     email,
     firstName,
     lastName,
