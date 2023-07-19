@@ -2,6 +2,7 @@ const {studentFormValidation} = require("./../validation/form");
 const StudentRegistationForm = require("./../dto/StudentRegistationForm");
 const Student = require("../model/student.model");
 const sequelize = require("../config/connection");
+const { Op } = require('sequelize');
 
 exports.registation = (req, res) => {
     let {index, email, firstName, lastName, faculty, department} = req.body;
@@ -32,7 +33,33 @@ exports.registation = (req, res) => {
         res.status(400).json({data: {}, msg: "Invalid form data"});
     }
 };
-
+exports.getInfoByIndexList = (req, res) => {
+    let allIds = req.body.indices; 
+    sequelize
+      .sync()
+      .then(() => {
+        Student.findAll({
+          where: {
+            index: {
+                [Op.in]: allIds,
+              },
+          },
+        })
+          .then(results => {
+            console.log(results);
+            res.status(200).json(results);
+          })
+          .catch(error => {
+            console.error('Failed to retrieve data: ', error);
+            res.status(500).json({ error: 'Failed to retrieve data' });
+          });
+      })
+      .catch(error => {
+        console.error('Something went wrong: ', error.message);
+        res.status(500).json({ error: 'Something went wrong' });
+      });
+  };
+  
 exports.getAll = (req, res) => {
     sequelize.sync().then(() => {
         Student.findAll().then(results => {
@@ -82,3 +109,4 @@ exports.deleteById = (req, res) => {
         console.error('SOMETHING WRONG : ', error.message);
     });
 };
+
