@@ -20,8 +20,7 @@ exports.signIn = async (req, res) => {
             if (user == null) {
                 res.status(401).send("No account for this email");
             }
-            hashedPassword = user.password;
-            if (!bcrypt.compareSync(password, hashedPassword)) {
+            if (!bcrypt.compareSync(password, user.password)) {
                 res.status(400).json("Password does not match !");
             } else {
                 const token = jwt.sign(
