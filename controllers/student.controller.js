@@ -8,15 +8,13 @@ function base64ToBlob(image) {
     return base64Data;
 }
 
-
 exports.registation = (req, res) => {
     let {index, email, firstName, lastName, faculty, department} = req.body;   
     let { index, email, firstName, lastName, faculty, department, photo } =
         req.body;
     // TODO: Adding to S3 bucket & retreiving link
-    console.log(req.body);
 
-    const image = base64ToBlob(photo)
+    const image = base64ToBlob(photo);
 
     let registationForm = new StudentRegistationForm(
         index,
