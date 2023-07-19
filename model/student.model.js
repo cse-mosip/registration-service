@@ -35,8 +35,8 @@ const Student = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    image:{
-      type: DataTypes.STRING,
+    photo:{
+      type: DataTypes.BLOB,
       allowNull : true,
     }
   },
