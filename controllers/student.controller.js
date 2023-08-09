@@ -2,7 +2,7 @@ const { studentFormValidation } = require("./../validation/form");
 const StudentRegistationForm = require("./../dto/StudentRegistationForm");
 const UserRegistrationForm = require("./../dto/UserRegistrationForm");
 const Student = require("../model/student.model");
-const User = require("../model/user.model");
+const userController = require("./user.controller");
 const sequelize = require("../config/connection");
 
 function base64ToBlob(image) {
@@ -49,7 +49,8 @@ exports.registation = (req, res) => {
         sequelize
             .sync()
             .then(() => {
-                User.create({...userRegistrationForm })
+                userController
+                    .registationFunction(userRegistrationForm)
                     .then(() => {
                         Student.create({...registationForm })
                             .then((student) => {

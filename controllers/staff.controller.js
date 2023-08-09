@@ -1,6 +1,6 @@
 const { staffFormValidation } = require("./../validation/form");
 
-const UserRegistrationForm = require("./../dto/UserRegistrationForm");
+const userController = require("./user.controller");
 const StaffRegistationForm = require("./../dto/StaffRegistationForm");
 const Staff = require("../model/staff.model");
 const User = require("../model/user.model");
@@ -29,7 +29,8 @@ exports.registation = (req, res) => {
         sequelize
             .sync()
             .then(() => {
-                User.create({...userRegistrationForm })
+                userController
+                    .registationFunction(userRegistrationForm)
                     .then(() => {
                         Staff.create({...registationForm })
                             .then((staff) => {

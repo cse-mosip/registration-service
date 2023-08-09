@@ -57,12 +57,14 @@ exports.retrieve = async(req, res) => {
             attributes: fields,
             where: {
                 index: {
-                    [Op.in]: indices },
+                    [Op.in]: indices,
+                },
             },
         });
         results = results.map((obj) => obj.dataValues);
         res.status(200).send(results);
     } catch (err) {
+        console.error(err);
         res.status(500).send({
             message: "Error occured",
         });
