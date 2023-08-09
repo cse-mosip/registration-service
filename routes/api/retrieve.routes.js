@@ -1,7 +1,6 @@
-const router = require('express').Router();
-const {isAuth} = require("../../middleware/authorization");
+const router = require("express").Router();
 const retrieveController = require("../../controllers/retrieve.controller");
 
 //sign in endpoint
-router.post("/", [isAuth], retrieveController.retrieve);
+router.post("/", retrieveController.retrieve);
 module.exports = router;
