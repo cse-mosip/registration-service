@@ -31,3 +31,4 @@ const filePathGenerator = (req,file) => {
 module.exports = {
     multer,storage,upload,removeFile,filePathGenerator
   };
+  

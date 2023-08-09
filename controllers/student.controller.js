@@ -9,7 +9,6 @@ function base64ToBlob(image) {
 }
 
 exports.registation = (req, res) => {
-    let {index, email, firstName, lastName, faculty, department} = req.body;   
     let { index, email, firstName, lastName, faculty, department, photo } =
         req.body;
     // TODO: Adding to S3 bucket & retreiving link
@@ -113,5 +112,6 @@ exports.deleteById = (req, res) => {
         })
         .catch((error) => {
             console.error("SOMETHING WRONG : ", error.message);
+            res.status(500).json({ error: error.message });
         });
 };
