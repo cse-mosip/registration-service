@@ -1,0 +1,70 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/retrieve": {
+            "post": {
+                "summary": "Get student information",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": [{
+                                    "index": "19000X",
+                                    "email": "<EMAIL>",
+                                    "firstName": "User1",
+                                    "lastName": "User1",
+                                    "faculty": "Faculty1",
+                                    "department": "Department1",
+                                    "photo": "<bytestring>"
+                                }]
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "indices": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "enum": ["index", "email", "firstName", "lastName", "faculty", "department", "photo"]
+                                        }
+                                    }
+                                }
+                            },
+                            "example": {
+                                "indices": [
+                                    "190000X"
+                                ],
+                                "fields": [
+                                    "index",
+                                    "email",
+                                    "firstName",
+                                    "lastName",
+                                    "faculty",
+                                    "department"
+                                ]
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

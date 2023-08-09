@@ -1,8 +1,8 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Student = require("../model/student.model");
 const rolePrivileges = require("../config/roles");
 
-exports.retrieve = async (req, res) => {
+exports.retrieve = async(req, res) => {
     try {
         if (!req.body || !req.body.indices || !req.body.fields) {
             res.status(400).send({
@@ -20,19 +20,30 @@ exports.retrieve = async (req, res) => {
             return;
         }
 
-        if (!(req.user.role in rolePrivileges)) {
-            res.status(400).send({
-                message: "Unknown role!",
-            });
-            return;
-        }
+        // if (!(req.user.role in rolePrivileges)) {
+        //     res.status(400).send({
+        //         message: "Unknown role!",
+        //     });
+        //     return;
+        // }
 
-        const accessibleFields = rolePrivileges[req.user.role];
+        // const accessibleFields = rolePrivileges[req.user.role];
+        const accessibleFields = [
+            "index",
+            "email",
+            "firstName",
+            "lastName",
+            "faculty",
+            "department",
+            "photo",
+        ];
 
         try {
-            fields.forEach(field => {
-                if (!(typeof field === 'string' || field instanceof String)) throw Error("Invalid field");
-                if (!accessibleFields.includes(field)) throw Error("Unauthorized to access some fields");
+            fields.forEach((field) => {
+                if (!(typeof field === "string" || field instanceof String))
+                    throw Error("Invalid field");
+                if (!accessibleFields.includes(field))
+                    throw Error("Unauthorized to access some fields");
             });
         } catch (err) {
             res.status(400).send({
@@ -45,10 +56,11 @@ exports.retrieve = async (req, res) => {
         let results = await Student.findAll({
             attributes: fields,
             where: {
-                index: { [Op.in]: indices }
-            }
+                index: {
+                    [Op.in]: indices },
+            },
         });
-        results = results.map(obj => obj.dataValues);
+        results = results.map((obj) => obj.dataValues);
         res.status(200).send(results);
     } catch (err) {
         res.status(500).send({
@@ -56,4 +68,4 @@ exports.retrieve = async (req, res) => {
         });
         return;
     }
-}
+};
