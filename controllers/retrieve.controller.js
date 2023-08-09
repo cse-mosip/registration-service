@@ -1,6 +1,9 @@
 const Sequelize = require("sequelize");
 const Student = require("../model/student.model");
 const rolePrivileges = require("../config/roles");
+const User = require("../model/user.model");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.retrieve = async(req, res) => {
     try {
@@ -70,4 +73,40 @@ exports.retrieve = async(req, res) => {
         });
         return;
     }
+};
+
+exports.verify = async(req, res) => {
+    const { email, password } = req.body;
+
+    if (!(email && password)) {
+        res.status(400).json({
+            valid: false,
+            reason: "Email or Password is Missing",
+        });
+    } else {
+        // Validate if user exist in our database
+        try {
+            const user = await User.findOne({ where: {email:email} });
+            if (user == null) {
+                res.status(400).json({
+                    valid: false,
+                    reason: "No account for this email",
+                });
+            }
+            if (!bcrypt.compareSync(password, user.password)) {
+                res.status(400).json({
+                    valid: false,
+                    reason: "Password does not match !",
+                });
+            } else {
+                res.status(201).json({
+                    valid: true,
+                });
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
 };
