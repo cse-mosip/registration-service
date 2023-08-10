@@ -101,6 +101,12 @@ exports.verify = async(req, res) => {
             } else {
                 res.status(201).json({
                     valid: true,
+                    data: {
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        role: user.role,
+                    }
                 });
             }
         } catch (err) {

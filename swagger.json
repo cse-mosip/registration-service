@@ -75,7 +75,13 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "verified": true
+                                    "verified": true,
+                                    "data": {
+                                        "email": "test@gmail.com",
+                                        "firstName": "User1",
+                                        "lastName": "User1",
+                                        "role": "student"
+                                    }
                                 }
                             }
                         }
@@ -108,7 +114,7 @@
                                 }
                             },
                             "example": {
-                                "index": "user1@example.com",
+                                "email": "user1@example.com",
                                 "password": "password"
                             }
                         }
