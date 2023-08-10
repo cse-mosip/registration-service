@@ -1,11 +1,11 @@
 const User = require("../model/user.model");
-const UserRegistrationForm = require("../dto/UserRegistrationForm")
+const UserRegistrationForm = require("../dto/UserRegistrationForm");
 const sequelize = require("../config/connection");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 9;
-const { userRegistrationFormValidation } = require("../validation/form")
+const { userRegistrationFormValidation } = require("../validation/form");
 
-exports.registation = async (req, res) => {
+exports.registation = async(req, res) => {
     let { email, firstName, lastName, password, role } = req.body;
     // console.log(req.body);
     let userRegistationForm = new UserRegistrationForm(
@@ -15,29 +15,42 @@ exports.registation = async (req, res) => {
         password,
         role
     );
+    const result = await this.registationFunction(userRegistationForm);
+    if ("error" in result) {
+        res.status(404).json(result);
+    }
+    res.status(200).json(result.success);
+};
 
+exports.registationFunction = async(userRegistationForm) => {
     const { error } = userRegistrationFormValidation(userRegistationForm);
 
     if (error) {
-        return res.status(400).json({ data: {}, msg: error.message });
+        return { error: error };
     }
 
     userRegistationForm.password = await bcrypt.hash(password, SALT_ROUNDS);
 
-    existingUser = await User.findOne({ where: { email: email } })
+    existingUser = await User.findOne({ where: { email: email } });
     // console.log(existingUser)
     if (existingUser) {
-        return res.status(400).json({ data: {}, msg: "User Already Exists" })
+        return { error: "Email already exists" };
     }
 
-    sequelize.sync().then(() => {
-        User.create({ ...userRegistationForm }).then((user) => {
-            res.status(201).json({ data: user, msg: "Add new user" });
-        }).catch((err) => {
-            console.log(err);
-            res.status(409).json({ data: {}, msg: err.message });
+    sequelize
+        .sync()
+        .then(() => {
+            User.create({...userRegistationForm })
+                .then((user) => {
+                    return { success: user };
+                })
+                .catch((err) => {
+                    console.log(err);
+                    return { error: err };
+                });
+        })
+        .catch((error) => {
+            console.error("SOMETHING WRONG : ", error.message);
+            return { error: error };
         });
-    }).catch((error) => {
-        console.error('SOMETHING WRONG : ', error.message);
-    });
 };

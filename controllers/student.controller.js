@@ -1,6 +1,8 @@
 const { studentFormValidation } = require("./../validation/form");
 const StudentRegistationForm = require("./../dto/StudentRegistationForm");
+const UserRegistrationForm = require("./../dto/UserRegistrationForm");
 const Student = require("../model/student.model");
+const userController = require("./user.controller");
 const sequelize = require("../config/connection");
 
 function base64ToBlob(image) {
@@ -9,11 +11,26 @@ function base64ToBlob(image) {
 }
 
 exports.registation = (req, res) => {
-    let { index, email, firstName, lastName, faculty, department, photo } =
-        req.body;
-    // TODO: Adding to S3 bucket & retreiving link
+    let {
+        index,
+        email,
+        firstName,
+        lastName,
+        faculty,
+        department,
+        photo,
+        password,
+    } = req.body;
 
     const image = base64ToBlob(photo);
+
+    let userRegistrationForm = new UserRegistrationForm(
+        email,
+        firstName,
+        lastName,
+        password,
+        "student"
+    );
 
     let registationForm = new StudentRegistationForm(
         index,
@@ -32,12 +49,20 @@ exports.registation = (req, res) => {
         sequelize
             .sync()
             .then(() => {
-                Student.create({...registationForm })
-                    .then((student) => {
-                        res.status(201).json({
-                            data: student,
-                            msg: "Add new user",
-                        });
+                userController
+                    .registationFunction(userRegistrationForm)
+                    .then(() => {
+                        Student.create({...registationForm })
+                            .then((student) => {
+                                res.status(201).json({
+                                    data: student,
+                                    msg: "Add new user",
+                                });
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                res.status(409).json({ data: {}, msg: err.message });
+                            });
                     })
                     .catch((err) => {
                         console.log(err);
