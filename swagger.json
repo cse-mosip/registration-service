@@ -76,12 +76,10 @@
                             "application/json": {
                                 "example": {
                                     "verified": true,
-                                    "data": {
-                                        "email": "test@gmail.com",
-                                        "firstName": "User1",
-                                        "lastName": "User1",
-                                        "role": "student"
-                                    }
+                                    "email": "test@gmail.com",
+                                    "firstName": "User1",
+                                    "lastName": "User1",
+                                    "role": "student"
                                 }
                             }
                         }
