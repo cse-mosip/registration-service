@@ -19,6 +19,7 @@ const userRegistrationFormValidation = (userRegistrationForm) => {
 };
 
 const studentFormValidation = (registationForm) => {
+	// console.log(registationForm)
 	try {
 		if (
 			registationForm?.index?.length > 0 &&

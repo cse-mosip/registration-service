@@ -35,6 +35,6 @@ app.use(BASE_URL, routes);
 // Sync Sequelize models to the MySQL database on server start
 sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, HOST, () => {
-        console.log(`Running on https://${HOST}:${PORT}${BASE_URL}`);
+        console.log(`Running on http://${HOST}:${PORT}${BASE_URL}`);
     });
 });
