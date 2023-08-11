@@ -11,6 +11,7 @@ function base64ToBlob(image) {
 }
 
 exports.registation = (req, res) => {
+    
     let {
         index,
         email,
@@ -18,9 +19,11 @@ exports.registation = (req, res) => {
         lastName,
         faculty,
         department,
-        photo,
         password,
-    } = req.body;
+    } = req.body.user;
+
+    let photo = req.body.photo;
+
 
     const image = base64ToBlob(photo);
 
@@ -42,6 +45,7 @@ exports.registation = (req, res) => {
         image
     );
 
+    console.log(registationForm.firstName)
     // Might add a limitation to size and formats
     let isValid = studentFormValidation(registationForm);
     console.log(isValid);
@@ -52,7 +56,7 @@ exports.registation = (req, res) => {
                 userController
                     .registationFunction(userRegistrationForm)
                     .then(() => {
-                        Student.create({...registationForm })
+                        Student.create({ ...registationForm })
                             .then((student) => {
                                 res.status(201).json({
                                     data: student,
@@ -99,6 +103,7 @@ exports.getAll = (req, res) => {
 
 exports.getById = (req, res) => {
     let id = req.params.id;
+   
     sequelize
         .sync()
         .then(() => {
@@ -123,10 +128,10 @@ exports.deleteById = (req, res) => {
         .sync()
         .then(() => {
             Student.destroy({
-                    where: {
-                        id: studentId,
-                    },
-                })
+                where: {
+                    id: studentId,
+                },
+            })
                 .then((results) => {
                     console.log(results);
                     res.status(200).json(results);
@@ -144,7 +149,6 @@ exports.deleteById = (req, res) => {
 exports.editUser = (req, res) => {
     let id = req.params.id;
     let { index, email, firstName, lastName, faculty, department } = req.body;
-    console.log(req.body);
     let registationForm = new StudentRegistationForm(
         index,
         email,
@@ -159,11 +163,11 @@ exports.editUser = (req, res) => {
         sequelize
             .sync()
             .then(() => {
-                Student.update({...registationForm }, {
-                        where: {
-                            id: id,
-                        },
-                    })
+                Student.update({ ...registationForm }, {
+                    where: {
+                        id: id,
+                    },
+                })
                     .then((student) => {
                         res.status(201).json({ data: student, msg: "Update the User" });
                     })

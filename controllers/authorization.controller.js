@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require("../model/user.model");
 
 exports.signIn = async (req, res) => {
+
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty!",
@@ -10,7 +11,6 @@ exports.signIn = async (req, res) => {
     }
 
     const { email, password } = req.body;
-
     if (!(email && password)) {
         res.status(400).send("Email or Password is Missing");
     } else {
