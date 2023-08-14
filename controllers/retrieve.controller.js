@@ -2,7 +2,6 @@ const Sequelize = require("sequelize");
 const Student = require("../model/student.model");
 const rolePrivileges = require("../config/roles");
 const User = require("../model/user.model");
-const Student = require("../model/student.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
