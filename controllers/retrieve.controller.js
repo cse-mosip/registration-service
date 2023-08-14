@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const Student = require("../model/student.model");
 const rolePrivileges = require("../config/roles");
 const User = require("../model/user.model");
+const Student = require("../model/student.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -86,7 +87,7 @@ exports.verify = async(req, res) => {
     } else {
         // Validate if user exist in our database
         try {
-            const user = await User.findOne({ where: {email:email} });
+            const user = await User.findOne({ where: { email: email } });
             if (user == null) {
                 res.status(400).json({
                     valid: false,
@@ -99,18 +100,21 @@ exports.verify = async(req, res) => {
                     reason: "Password does not match !",
                 });
             } else {
-                res.status(201).json({
+                let data = {
                     valid: true,
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,
-                    role: user.role
-                });
+                    role: user.role,
+                };
+                if (user.role == "student") {
+                    const student = await Student.findOne({ where: { email: email } });
+                    data["index"] = student.index;
+                }
+                res.status(201).json(data);
             }
         } catch (err) {
             console.log(err);
         }
     }
-
-
 };
