@@ -117,3 +117,20 @@ exports.verify = async(req, res) => {
         }
     }
 };
+
+exports.photo = async(req, res) => {
+    try {
+        console.log(req.query.index);
+        const index = req.query.index;
+        if (!index) {
+            return res.status(404).json({ message: "Invalid index" });
+        }
+        const student = await Student.findOne({ where: { index: index } });
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+        return res.send(student.photo);
+    } catch (err) {
+        return res.status(403).json({ message: "No index specified" });
+    }
+};
