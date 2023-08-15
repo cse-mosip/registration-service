@@ -30,7 +30,7 @@ exports.signIn = async(req, res) => {
                 return res.status(201).json(token);
             }
         } catch (err) {
-            return res.status(500).send("Internal server error");
+            return res.status(500).send(err.message);
         }
     }
 };
