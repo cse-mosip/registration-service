@@ -79,7 +79,7 @@ exports.verify = async(req, res) => {
     const { email, password } = req.body;
 
     if (!(email && password)) {
-        res.status(400).json({
+        return res.status(400).json({
             valid: false,
             reason: "Email or Password is Missing",
         });
@@ -113,7 +113,7 @@ exports.verify = async(req, res) => {
                 res.status(201).json(data);
             }
         } catch (err) {
-            console.log(err);
+            return res.status(500).send("Internal Server Error");
         }
     }
 };

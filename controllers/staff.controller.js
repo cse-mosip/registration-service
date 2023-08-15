@@ -34,16 +34,16 @@ exports.registation = (req, res) => {
                     .then(() => {
                         Staff.create({...registationForm })
                             .then((staff) => {
-                                res.status(201).json({ data: staff, msg: "Add new user" });
+                                return res.status(201).json({ data: staff, msg: "Add new user" });
                             })
                             .catch((err) => {
                                 console.log(err);
-                                res.status(409).json({ data: {}, msg: err.message });
+                                return res.status(409).json({ data: {}, msg: err.message });
                             });
                     })
                     .catch((err) => {
                         console.log(err);
-                        res.status(409).json({ data: {}, msg: err.message });
+                        return res.status(409).json({ data: {}, msg: err.message });
                     });
             })
             .catch((error) => {
@@ -51,6 +51,6 @@ exports.registation = (req, res) => {
             });
     } else {
         //response
-        res.status(400).json({ data: {}, msg: "Invalid form data" });
+        return res.status(400).json({ data: {}, msg: "Invalid form data" });
     }
 };

@@ -1,1 +1,1 @@
-INSERT INTO User (email, firstName, lastName, password, role) VALUES ('admin@localhost', 'Admin', 'User', '$2b$12$dInEE4wOcI10pI.DhMcnkesBXUqYm8hzIRP.X/py1Fxc4lJ/bAr7O', 'admin');
+INSERT INTO user (email, firstName, lastName, password, role) VALUES ('admin@cse-mosip.com', 'Admin', 'User', '$2b$12$dInEE4wOcI10pI.DhMcnkesBXUqYm8hzIRP.X/py1Fxc4lJ/bAr7O', 'admin');

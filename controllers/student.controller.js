@@ -4,28 +4,20 @@ const UserRegistrationForm = require("./../dto/UserRegistrationForm");
 const Student = require("../model/student.model");
 const sequelize = require("../config/connection");
 const User = require("../model/user.model");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 function base64ToBlob(image) {
     const base64Data = image.replace(/^data:image\/png;base64,/, "");
     return base64Data;
 }
 
-exports.registation = async (req, res) => {
+exports.registation = async(req, res) => {
     try {
-        let {
-            index,
-            email,
-            firstName,
-            lastName,
-            faculty,
-            department,
-            password,
-        } = req.body.user;
+        let { index, email, firstName, lastName, faculty, department, password } =
+        req.body.user;
 
         let photo = req.body.photo;
         let hashedPassword = bcrypt.hashSync(password, 10);
-
 
         const image = base64ToBlob(photo);
 
@@ -60,7 +52,9 @@ exports.registation = async (req, res) => {
         });
     } catch (error) {
         console.error("An error occurred:", error);
-        res.status(500).json({ msg: "An error occurred while processing the request" });
+        return res
+            .status(500)
+            .json({ msg: "An error occurred while processing the request" });
     }
 };
 
@@ -71,15 +65,16 @@ exports.getAll = (req, res) => {
             Student.findAll()
                 .then((results) => {
                     console.log(results);
-                    res.status(200).json(results);
+                    return res.status(200).json(results);
                 })
                 .catch((error) => {
                     console.error("Failed to retrieve data : ", error);
-                    res.status(500).json({ error: "Failed to retrieve data" });
+                    return res.status(500).json({ error: "Failed to retrieve data" });
                 });
         })
         .catch((error) => {
             console.error("SOMETHING WRONG : ", error.message);
+            return res.status(500).json({ error: error.message });
         });
 };
 
@@ -92,15 +87,16 @@ exports.getById = (req, res) => {
             Student.findByPk(id)
                 .then((results) => {
                     console.log(results);
-                    res.status(200).json(results);
+                    return res.status(200).json(results);
                 })
                 .catch((error) => {
                     console.error("Failed to retrieve data : ", error);
-                    res.status(500).json({ error: "Failed to retrieve data" });
+                    return res.status(500).json({ error: "Failed to retrieve data" });
                 });
         })
         .catch((error) => {
             console.error("SOMETHING WRONG : ", error.message);
+            return res.status(500).json({ error: error.message });
         });
 };
 
@@ -110,21 +106,21 @@ exports.deleteById = (req, res) => {
         .sync()
         .then(() => {
             Student.destroy({
-                where: {
-                    id: studentId,
-                },
-            })
+                    where: {
+                        id: studentId,
+                    },
+                })
                 .then((results) => {
                     console.log(results);
-                    res.status(200).json(results);
+                    return res.status(200).json(results);
                 })
                 .catch((error) => {
-                    res.status(500).json({ error: error.message });
+                    return res.status(500).json({ error: error.message });
                 });
         })
         .catch((error) => {
             console.error("SOMETHING WRONG : ", error.message);
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
         });
 };
 
@@ -145,24 +141,27 @@ exports.editUser = (req, res) => {
         sequelize
             .sync()
             .then(() => {
-                Student.update({ ...registationForm }, {
-                    where: {
-                        id: id,
-                    },
-                })
+                Student.update({...registationForm }, {
+                        where: {
+                            id: id,
+                        },
+                    })
                     .then((student) => {
-                        res.status(201).json({ data: student, msg: "Update the User" });
+                        return res
+                            .status(201)
+                            .json({ data: student, msg: "Update the User" });
                     })
                     .catch((err) => {
                         console.log(err);
-                        res.status(409).json({ data: {}, msg: err.message });
+                        return res.status(409).json({ data: {}, msg: err.message });
                     });
             })
             .catch((error) => {
                 console.error("SOMETHING WRONG : ", error.message);
+                return res.status(500).json({ error: error.message });
             });
     } else {
         //response
-        res.status(400).json({ data: {}, msg: "Invalid form data" });
+        return res.status(400).json({ data: {}, msg: "Invalid form data" });
     }
 };
